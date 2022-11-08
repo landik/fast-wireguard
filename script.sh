@@ -56,7 +56,7 @@ while [ $num -gt 100 ]; do
     echo "Endpoint = $WIREGUARD_IP:$WIREGUARD_PORT" >> client$num.conf
     echo "AllowedIPs = 0.0.0.0/0" >> client$num.conf
     echo "PersistentKeepalive = 20" >> client$num.conf
-    qrencode -t ansiutf8 < client$num.conf > client$num-qr.conf
+    qrencode -t ansiutf8 < client$num.conf > client$num-qr.txt
     num=$[ $num - 1 ]
 done
 
