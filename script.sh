@@ -13,7 +13,7 @@ ufw enable
 
 add-apt-repository ppa:wireguard/wireguard
 apt update
-apt install -y wireguard bind9 qrencode zip
+apt install -y wireguard stubby qrencode zip
 
 echo "net.ipv4.ip_forward = 1" >> /etc/sysctl.conf
 echo "net.ipv4.conf.all.rp_filter = 1" >> /etc/sysctl.conf
@@ -65,16 +65,18 @@ zip -r -9 configs.zip client*
 ufw allow $WIREGUARD_PORT/udp
 systemctl enable --now wg-quick@wg0
 
-nslookup google.com 127.0.0.1
+nslookup google.com
 
-ufw allow from 10.8.0.1/24 to any app Bind9
+ufw allow from 10.8.0.1/24 to any port 53
 
-mv named.conf.options /etc/bind/named.conf.options
+mv stubby.yml /etc/stubby/stubby.yml
+systemctl disable systemd-resolved
+systemctl stop systemd-resolved
 
-systemctl enable bind9
-systemctl restart bind9
+systemctl enable stubby
+systemctl restart stubby
 
-nslookup google.com 127.0.0.1
+nslookup google.com
 
 #useradd -m admin
 ##Устанавливаем пароль для юзера
