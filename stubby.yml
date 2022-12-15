@@ -8,6 +8,7 @@ round_robin_upstreams: 1
 idle_timeout: 10000
 listen_addresses:
   - 127.0.0.1
+  - 10.8.0.1
   - 0::1
 upstream_recursive_servers:
   - address_data: 1.1.1.1

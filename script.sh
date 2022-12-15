@@ -1,15 +1,11 @@
 #!/bin/bash
 
 WIREGUARD_IP=0.0.0.0
-ETH_INTERFACE=enp0s8
+ETH_INTERFACE=ens3
 
-WIREGUARD_PORT=51667
+WIREGUARD_PORT=443
 WIREGUARD_CONFIG=wg0.conf
 WIREGUARD_PATH=/etc/wireguard
-
-
-ufw allow OpenSSH
-ufw enable
 
 add-apt-repository ppa:wireguard/wireguard
 apt update
@@ -73,26 +69,11 @@ mv stubby.yml /etc/stubby/stubby.yml
 systemctl disable systemd-resolved
 systemctl stop systemd-resolved
 
+echo "nameserver 127.0.0.1" > /etc/resolv.conf
+echo "options edns0 trust-ad" >> /etc/resolv.conf
+
 systemctl enable stubby
 systemctl restart stubby
 
 nslookup google.com
-
-#useradd -m admin
-##Устанавливаем пароль для юзера
-#passwd admin
-##Добавляем в группу системных администраторов
-#usermod -aG sudo admin #Debian/Ubuntu
-#
-##1 Изменение оболочки
-#sudo vipw
-##изменяем строку
-##root:x:0:0:root:/root:/bin/bash
-##на
-##root:x:0:0:root:/root:/sbin/nologin
-#
-##2 запрет входа ssh
-#echo "PermitRootLogin no" >> /etc/ssh/sshd_config
-#echo "AllowUsers admin" >> /etc/ssh/sshd_config
-#systemctl restart ssh
 
