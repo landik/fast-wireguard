@@ -1,7 +1,19 @@
 #!/bin/bash
 
-WIREGUARD_IP=0.0.0.0
-ETH_INTERFACE=ens3
+if [ -n "$1" ]
+then
+  echo "IP $1";
+  WIREGUARD_IP=$1
+else
+echo "IP not exist"
+  exit;
+fi
+ETH_INTERFACE="ens3"
+if [ -n "$2" ]
+then
+  echo "ETH $2";
+  ETH_INTERFACE=$2
+fi
 
 WIREGUARD_PORT=443
 WIREGUARD_CONFIG=wg0.conf
