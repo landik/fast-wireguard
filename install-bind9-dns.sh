@@ -3,6 +3,7 @@
 apt install -y bind9
 mv named.conf.options /etc/bind/named.conf.options
 ufw allow from 10.8.0.1/24 to any port 53
+ufw allow from 10.8.0.1/24 to any port 953
 systemctl disable systemd-resolved
 systemctl stop systemd-resolved
 echo "nameserver 127.0.0.1" > /etc/resolv.conf
