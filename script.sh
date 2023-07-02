@@ -23,6 +23,9 @@ add-apt-repository ppa:wireguard/wireguard
 apt update
 apt install -y wireguard qrencode zip
 
+rm client*
+rm configs.zip
+
 echo "net.ipv4.ip_forward = 1" >> /etc/sysctl.conf
 echo "net.ipv4.conf.all.rp_filter = 1" >> /etc/sysctl.conf
 echo "net.ipv4.conf.default.proxy_arp = 0" >> /etc/sysctl.conf
@@ -64,11 +67,13 @@ while [ $num -gt 100 ]; do
     echo "Endpoint = $WIREGUARD_IP:$WIREGUARD_PORT" >> client$num.conf
     echo "AllowedIPs = 0.0.0.0/0" >> client$num.conf
     echo "PersistentKeepalive = 20" >> client$num.conf
-    qrencode -t ansiutf8 < client$num.conf > client$num-qr.txt
+    qrencode -s 6 -l H -o "client$num.png" < client$num.conf
+#    qrencode -t ansiutf8 < client$num.conf > client$num-qr.txt
     num=$[ $num - 1 ]
 done
 
 zip -r -9 configs.zip client*
+rm client*
 
 ufw allow $WIREGUARD_PORT/udp
 systemctl enable --now wg-quick@wg0
